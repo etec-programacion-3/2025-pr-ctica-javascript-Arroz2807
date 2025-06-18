@@ -1,54 +1,64 @@
-// Referencias a los elementos del DOM
-const productList = document.getElementById('product-list');
-const cartList = document.getElementById('cart-list');
-const emptyCartBtn = document.getElementById('empty-cart');
-const cartSummary = document.getElementById('cart-summary');
+const productList = document.getElementById("product-list");
+const cartList = document.getElementById("cart-list");
+const emptyCartBtn = document.getElementById("empty-cart");
+const cartSummary = document.getElementById("cart-summary");
 
-// Estado del carrito (array de productos)
 let cart = [];
 
-// Renderiza el carrito en el DOM y muestra el resumen
-const renderCart = () => {
-  cartList.innerHTML = '';
-  cart.forEach((item, idx) => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} - $${item.price}`;
-    // Botón para eliminar el producto del carrito
-    const btn = document.createElement('button');
-    btn.textContent = 'Eliminar';
-    btn.className = 'remove';
-    btn.dataset.idx = idx;
-    li.appendChild(btn);
-    cartList.appendChild(li);
-  });
-  // Calcula y muestra el total y la cantidad de productos
-  const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-  cartSummary.textContent = `Total: $${total} | Productos: ${cart.length}`;
-};
+productList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("add")) {
+    const item = e.target.parentElement;
+    const id = item.dataset.id;
+    const name = item.dataset.name;
+    const price = parseFloat(item.dataset.price);
 
-// Maneja el evento de agregar productos al carrito usando delegación de eventos
-productList.addEventListener('click', e => {
-  if (e.target.classList.contains('add')) {
-    const li = e.target.closest('li');
-    const { id, name, price } = li.dataset;
-    cart.push({ id, name, price });
+    const existing = cart.find(product => product.id === id);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ id, name, price, quantity: 1 });
+    }
+
     renderCart();
   }
 });
 
-// Maneja el evento de eliminar productos del carrito usando delegación de eventos
-cartList.addEventListener('click', e => {
-  if (e.target.classList.contains('remove')) {
-    cart.splice(e.target.dataset.idx, 1);
+// Delegación de eventos para eliminar productos
+cartList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remove")) {
+    const id = e.target.dataset.id;
+    cart = cart.filter(product => product.id !== id);
     renderCart();
   }
 });
 
-// Maneja el evento de vaciar el carrito
-emptyCartBtn.addEventListener('click', () => {
+// Vaciar carrito
+emptyCartBtn.addEventListener("click", () => {
   cart = [];
   renderCart();
 });
 
-// Render inicial del carrito
-renderCart(); 
+function renderCart() {
+  cartList.innerHTML = "";
+
+  cart.forEach(product => {
+    const li = document.createElement("li");
+    li.textContent = `${product.name} x${product.quantity} - $${product.price * product.quantity}`;
+    
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Eliminar";
+    removeBtn.classList.add("remove");
+    removeBtn.dataset.id = product.id;
+
+    li.appendChild(removeBtn);
+    cartList.appendChild(li);
+  });
+
+  updateSummary();
+}
+
+function updateSummary() {
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  cartSummary.textContent = `Total: ${totalItems} producto(s) | $${totalPrice}`;
+}
