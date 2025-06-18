@@ -1,37 +1,61 @@
-// Referencia al contenedor principal de la SPA
-const app = document.getElementById('app');
+const app = document.getElementById("app");
+const buttons = document.querySelectorAll("button[data-route]");
 
-// Definición de rutas y sus vistas asociadas (solo básicas)
 const routes = {
-  '/': () => '<h1>Inicio</h1><p>Bienvenido a la SPA.</p>',
-  '/productos': () => '<h1>Productos</h1><p>Lista de productos aquí.</p>',
-  '/contacto': () => '<h1>Contacto</h1><p>Formulario de contacto aquí.</p>'
-  // TODO: Agrega aquí la ruta y la vista para /producto/1
+  "/": () => `<h1>Inicio</h1><p>Bienvenido a nuestra SPA.</p>`,
+  "/productos": () => `
+    <h1>Productos</h1>
+    <ul>
+      <li><a href="/producto/1" data-link>Producto 1</a></li>
+      <li><a href="/producto/2" data-link>Producto 2</a></li>
+      <li><a href="/producto/3" data-link>Producto 3</a></li>
+    </ul>
+  `,
+  "/contacto": () => `<h1>Contacto</h1><p>Escribinos a contacto@empresa.com</p>`
 };
 
-// Renderiza la vista correspondiente a la ruta actual
-const render = route => {
-  app.innerHTML = routes[route] ? routes[route]() : '<h1>404</h1><p>Página no encontrada.</p>';
-};
+// Vista de detalle dinámica
+function renderDetalle(id) {
+  return `<h1>Detalle del Producto ${id}</h1><p>Este es el detalle del producto con ID ${id}.</p><a href="/productos" data-link>Volver a productos</a>`;
+}
 
-// Cambia la ruta usando history.pushState y renderiza la nueva vista
-const navigate = route => {
-  window.history.pushState({}, '', route);
-  render(route);
-};
+function render(path) {
+  if (routes[path]) {
+    app.innerHTML = routes[path]();
+  } else if (path.startsWith("/producto/")) {
+    const id = path.split("/")[2];
+    app.innerHTML = renderDetalle(id);
+  } else {
+    app.innerHTML = `<h1>404</h1><p>Página no encontrada.</p>`;
+  }
+}
 
-// Maneja los clics en la navegación para cambiar de vista sin recargar
-// Usa delegación de eventos en el nav
-// Actualiza la URL y la vista
+// Función que navega y actualiza URL
+function navigateTo(path) {
+  history.pushState(null, null, path);
+  render(path);
+}
 
-document.querySelector('nav').addEventListener('click', e => {
-  if (e.target.matches('button[data-route]')) {
-    navigate(e.target.dataset.route);
+// Listeners para botones
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    const route = button.dataset.route;
+    navigateTo(route);
+  });
+});
+
+// Delegación para enlaces internos con [data-link]
+document.addEventListener("click", e => {
+  if (e.target.matches("[data-link]")) {
+    e.preventDefault();
+    navigateTo(e.target.getAttribute("href"));
   }
 });
 
-// TODO: Maneja el evento popstate para soportar navegación con los botones del navegador
-// window.addEventListener(...)
+// Soporte para navegación del navegador (atrás/adelante)
+window.addEventListener("popstate", () => {
+  render(location.pathname);
+});
 
-// Render inicial según la ruta actual
-render(window.location.pathname); 
+// Render inicial
+render(location.pathname);
