@@ -1,5 +1,5 @@
 // URL base de la API de productos
-const BASE_URL = 'http://localhost:5000/api/products';
+const BASE_URL = 'http://localhost:3000/api/products';
 
 // Referencias a los elementos del DOM
 const list = document.getElementById('product-list');
