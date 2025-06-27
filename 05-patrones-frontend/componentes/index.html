@@ -3,11 +3,323 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Componentes Reutilizables</title>
+  <title>Demo Componentes Reutilizables</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9fafb;
+    }
+    
+    .demo-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .demo-section h2 {
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    
+    .switch-demo {
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .switch-demo button {
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .switch-demo button:hover {
+      background-color: #4f46e5;
+    }
+    
+    .switch-demo button.active {
+      background-color: #059669;
+    }
+    
+    #app {
+      min-height: 200px;
+    }
+    
+    .tarjeta {
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Componentes Reutilizables</h1>
-  <div id="app"></div>
-  <script type="module" src="main.js"></script>
+  <h1>🚀 Demo de Componentes Reutilizables</h1>
+  
+  <div class="demo-section">
+    <h2>📝 Ejercicios Completados</h2>
+    <ul>
+      <li>✅ <strong>Ejercicio 1:</strong> Componente reutilizable de "Tarjeta" para mostrar información</li>
+      <li>✅ <strong>Ejercicio 2:</strong> Formulario refactorizado como componente</li>
+      <li>✅ <strong>Ejercicio 3:</strong> Validaciones y feedback visual</li>
+    </ul>
+  </div>
+
+  <div class="demo-section">
+    <h2>🎮 Selecciona la versión a probar</h2>
+    <div class="switch-demo">
+      <button id="btn-basico" class="active">Versión Básica</button>
+      <button id="btn-avanzado">Versión con Validaciones</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2 id="demo-title">🔧 Componentes Básicos</h2>
+    <div id="demo-description">
+      <p>Esta versión incluye los componentes básicos: Tarjeta y Formulario reutilizables.</p>
+      <p><strong>Prueba:</strong> Escribe cualquier texto y envía el formulario.</p>
+    </div>
+    <div id="app"></div>
+  </div>
+
+  <div class="demo-section">
+    <h2>📚 Características de cada versión</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div>
+        <h3>🟢 Versión Básica</h3>
+        <ul>
+          <li>Componente Tarjeta simple</li>
+          <li>Formulario con validación HTML básica</li>
+          <li>Callback para manejar envíos</li>
+          <li>Reseteo automático del formulario</li>
+        </ul>
+      </div>
+      <div>
+        <h3>🔥 Versión Avanzada</h3>
+        <ul>
+          <li>Tarjetas con tipos (info, success, error)</li>
+          <li>Validación en tiempo real</li>
+          <li>Feedback visual inmediato</li>
+          <li>Validaciones personalizables</li>
+          <li>Estilos dinámicos</li>
+          <li>Palabras prohibidas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const app = document.getElementById('app');
+    const btnBasico = document.getElementById('btn-basico');
+    const btnAvanzado = document.getElementById('btn-avanzado');
+    const demoTitle = document.getElementById('demo-title');
+    const demoDescription = document.getElementById('demo-description');
+
+    // Componentes básicos
+    function TarjetaBasica({ titulo, contenido }) {
+      const div = document.createElement('div');
+      div.className = 'tarjeta';
+      div.innerHTML = `<h2>${titulo}</h2><p>${contenido}</p>`;
+      div.style.cssText = `
+        border: 2px solid #3b82f6;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 8px 0;
+        background-color: #eff6ff;
+      `;
+      return div;
+    }
+
+    function FormularioBasico({ onSubmit }) {
+      const form = document.createElement('form');
+      form.innerHTML = `
+        <input type="text" name="dato" placeholder="Ingresa un dato" required style="
+          padding: 8px 12px;
+          border: 2px solid #d1d5db;
+          border-radius: 4px;
+          font-size: 16px;
+          margin-right: 8px;
+        " />
+        <button type="submit" style="
+          padding: 8px 16px;
+          background-color: #3b82f6;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+        ">Enviar</button>
+      `;
+      form.onsubmit = e => {
+        e.preventDefault();
+        const dato = form.dato.value.trim();
+        if (dato) {
+          onSubmit(dato);
+          form.reset();
+        }
+      };
+      return form;
+    }
+
+    // Componentes avanzados (versión simplificada para demo)
+    function TarjetaAvanzada({ titulo, contenido, tipo = 'info' }) {
+      const div = document.createElement('div');
+      div.className = `tarjeta tarjeta--${tipo}`;
+      div.innerHTML = `<h2>${titulo}</h2><p>${contenido}</p>`;
+      
+      div.style.cssText = `
+        border: 2px solid;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 8px 0;
+        ${tipo === 'success' ? 'border-color: #22c55e; background-color: #f0fdf4;' : ''}
+        ${tipo === 'error' ? 'border-color: #ef4444; background-color: #fef2f2;' : ''}
+        ${tipo === 'info' ? 'border-color: #3b82f6; background-color: #eff6ff;' : ''}
+      `;
+      
+      return div;
+    }
+
+    function FormularioAvanzado({ onSubmit }) {
+      const container = document.createElement('div');
+      const form = document.createElement('form');
+      const input = document.createElement('input');
+      const button = document.createElement('button');
+      const feedback = document.createElement('div');
+      
+      input.type = 'text';
+      input.placeholder = 'Ingresa un dato (mín. 3 caracteres)';
+      input.required = true;
+      input.style.cssText = `
+        padding: 8px 12px;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-right: 8px;
+        width: 200px;
+      `;
+      
+      button.type = 'submit';
+      button.textContent = 'Enviar';
+      button.style.cssText = `
+        padding: 8px 16px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      `;
+      
+      feedback.style.cssText = `
+        margin-top: 8px;
+        font-size: 14px;
+        min-height: 20px;
+      `;
+      
+      input.oninput = () => {
+        const valor = input.value.trim();
+        if (valor.length > 0 && valor.length < 3) {
+          feedback.textContent = 'Mínimo 3 caracteres';
+          feedback.style.color = '#ef4444';
+          input.style.borderColor = '#ef4444';
+        } else if (valor.length >= 3) {
+          feedback.textContent = 'Dato válido';
+          feedback.style.color = '#22c55e';
+          input.style.borderColor = '#22c55e';
+        } else {
+          feedback.textContent = '';
+          input.style.borderColor = '#d1d5db';
+        }
+      };
+      
+      form.onsubmit = e => {
+        e.preventDefault();
+        const valor = input.value.trim();
+        if (valor.length >= 3) {
+          onSubmit(valor);
+          form.reset();
+          feedback.textContent = '¡Enviado!';
+          feedback.style.color = '#22c55e';
+          input.style.borderColor = '#d1d5db';
+          setTimeout(() => feedback.textContent = '', 2000);
+        }
+      };
+      
+      form.appendChild(input);
+      form.appendChild(button);
+      container.appendChild(form);
+      container.appendChild(feedback);
+      
+      return container;
+    }
+
+    // Funciones de manejo
+    function mostrarTarjetaBasica(dato) {
+      app.appendChild(TarjetaBasica({ titulo: 'Dato enviado', contenido: dato }));
+    }
+
+    function mostrarTarjetaAvanzada(dato) {
+      let tipo = 'info';
+      if (dato.length > 10) tipo = 'success';
+      else if (dato.includes('test')) tipo = 'error';
+      
+      app.appendChild(TarjetaAvanzada({ 
+        titulo: `Dato recibido (${dato.length} chars)`, 
+        contenido: dato,
+        tipo: tipo
+      }));
+    }
+
+    // Funciones de cambio de demo
+    function cargarDemoBasico() {
+      app.innerHTML = '';
+      app.appendChild(FormularioBasico({ onSubmit: mostrarTarjetaBasica }));
+      demoTitle.textContent = '🔧 Componentes Básicos';
+      demoDescription.innerHTML = `
+        <p>Esta versión incluye los componentes básicos: Tarjeta y Formulario reutilizables.</p>
+        <p><strong>Prueba:</strong> Escribe cualquier texto y envía el formulario.</p>
+      `;
+      btnBasico.classList.add('active');
+      btnAvanzado.classList.remove('active');
+    }
+
+    function cargarDemoAvanzado() {
+      app.innerHTML = '';
+      app.appendChild(FormularioAvanzado({ onSubmit: mostrarTarjetaAvanzada }));
+      demoTitle.textContent = '🔥 Componentes con Validaciones';
+      demoDescription.innerHTML = `
+        <p>Versión avanzada con validaciones en tiempo real y feedback visual.</p>
+        <p><strong>Prueba:</strong> Escribe menos de 3 caracteres para ver validación. Textos largos (>10 chars) crean tarjetas verdes.</p>
+      `;
+      btnAvanzado.classList.add('active');
+      btnBasico.classList.remove('active');
+    }
+
+    // Event listeners
+    btnBasico.addEventListener('click', cargarDemoBasico);
+    btnAvanzado.addEventListener('click', cargarDemoAvanzado);
+
+    // Inicializar con demo básico
+    cargarDemoBasico();
+  </script>
 </body>
-</html> 
+</html>
