@@ -1,11 +1,22 @@
 {
-  "name": "jest-tests",
+  "name": "jest-tests-completado",
   "version": "1.0.0",
+  "description": "Ejercicios completados de testing con Jest",
   "type": "module",
   "devDependencies": {
     "jest": "^29.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "*.js",
+      "!node_modules/**"
+    ]
   }
-} 
+}

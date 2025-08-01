@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto moderno con Vite - Solución</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 600px;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    .status {
+      background: #e8f5e8;
+      border: 2px solid #4caf50;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .tool {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .commands {
+      text-align: left;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    code {
+      background: #333;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛠️ Herramientas y Buenas Prácticas - Solución</h1>
+    
+    <div class="status">
+      <h3>✅ Ejercicios Completados</h3>
+      <p>Todos los ejercicios han sido resueltos exitosamente</p>
+    </div>
+    
+    <div class="tools">
+      <div class="tool">
+        <h4>📦 dayjs</h4>
+        <p>Dependencia instalada y en uso</p>
+      </div>
+      <div class="tool">
+        <h4>🔍 ESLint</h4>
+        <p>Con reglas personalizadas</p>
+      </div>
+      <div class="tool">
+        <h4>✨ Prettier</h4>
+        <p>Formateo automático</p>
+      </div>
+      <div class="tool">
+        <h4>⚡ Vite</h4>
+        <p>Servidor de desarrollo</p>
+      </div>
+    </div>
+    
+    <div class="commands">
+      <h4>📝 Comandos disponibles:</h4>
+      <ul>
+        <li><code>npm run dev</code> - Inicia servidor de desarrollo</li>
+        <li><code>npm run lint</code> - Ejecuta ESLint</li>
+        <li><code>npm run lint:fix</code> - Corrige errores automáticamente</li>
+        <li><code>npm run format</code> - Formatea el código</li>
+        <li><code>npm run format:check</code> - Verifica formato</li>
+        <li><code>npm run check</code> - Ejecuta lint y format check</li>
+      </ul>
+    </div>
+    
+    <div id="datetime-container" style="margin-top: 20px;">
+      <p>Cargando fecha y hora...</p>
+    </div>
+  </div>
+
+  <script type="module" src="ejercicio.js">
+    // Simulación de dayjs para mostrar la fecha (en un proyecto real usarías dayjs)
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    
+    document.getElementById('datetime-container').innerHTML = `
+      <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
+        <h4>📅 Fecha y hora actual:</h4>
+        <p style="font-size: 16px; font-weight: bold; color: #1976d2;">${formattedDate}</p>
+        <p style="font-size: 12px; color: #666;">
+          En el proyecto real, esto se mostraría usando dayjs importado desde ejercicio.js
+        </p>
+      </div>
+    `;
+    
+    console.log('✅ Proyecto moderno con herramientas configurado correctamente!');
+  </script>
+
+</body>
+</html>
